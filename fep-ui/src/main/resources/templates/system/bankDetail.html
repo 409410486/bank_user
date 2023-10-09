@@ -1,0 +1,58 @@
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{common/indexLayout}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+
+</head>
+<body class="w-100 text-center">
+<th:block layout:fragment="content">
+    <div class="card w-100">
+        <div class="card-header text-start">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb my-2">
+                    <li class="breadcrumb-item"><a th:href="@{/}">首頁</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">銀行檔維護</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="card-body">
+            <form id="dtlForm" th:object="${bank}" method="POST" th:action="@{/bank}" class="need-validated">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" th:field="*{bankId}" placeholder="銀行ID" th:readonly="*{bankId != null && bankId != ''}" required>
+                    <label for="bankId">銀行ID</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" th:field="*{bankName}" placeholder="銀行名稱" required>
+                    <label for="bankName">銀行名稱</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" th:field="*{bankAddress}" placeholder="銀行地址" required>
+                    <label for="bankAddress">銀行地址</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" th:field="*{bankTel}" placeholder="銀行電話" required>
+                    <label for="bankTel">銀行電話</label>
+                </div>
+                
+                <input type="hidden" name="action" />
+                <a href="#" class="btn btn-sm btn-primary mx-2" onclick="submit('C')" th:if="*{bankId == null || bankId == ''}">新增</a>
+                <a href="#" class="btn btn-sm btn-primary mx-2" onclick="submit('U')" th:if="*{bankId != null && bankId != ''}">更新</a>
+                <a href="#" class="btn btn-sm btn-danger mx-2" onclick="submit('D')" th:if="*{bankId != null && bankId != ''}">刪除</a>
+                <a th:href="@{/bank}" class="btn btn-sm btn-secondary mx-2" >返回</a>
+            </form>
+        </div>
+    </div>
+    <script>
+        function submit(action){
+            let form = document.querySelector("#dtlForm");
+            form.reportValidity();
+            if (!form.checkValidity() && action != 'D') {
+                return;
+            }
+            form.querySelector("input[name='action']").value = action;
+            form.submit();
+        }
+
+    </script>
+</th:block>
+</body>
+</html>
